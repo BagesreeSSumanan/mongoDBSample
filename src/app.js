@@ -1,17 +1,20 @@
 const express = require('express');
 const mongoos = require('mongoose');
 const bodyParser = require('body-parser');
+const config = require('./config/config');
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const Contact = require('../src/router/Contact')
-
+const Contact = require('./router/contactRouter');
+const PORT = config.port;
+const ConnectionString = config.ConnectionString;
+console.log("ConnectionString",ConnectionString);
 app.use('/api', Contact)
 const connectToDB = async() =>{
     try{
-        await mongoos.connect('mongodb://localhost:27017/collections',{
+        await mongoos.connect(ConnectionString,{
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })
@@ -25,7 +28,7 @@ const connectToDB = async() =>{
 }
 connectToDB();
 
-const port = 3000;
+const port = PORT;
 app.listen(port,()=>{
  console.log(`Example app listening on port ${port}`);
 });

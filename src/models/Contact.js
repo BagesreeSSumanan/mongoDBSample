@@ -8,7 +8,7 @@ const contactSchema = new mongoose.Schema({
         trim :true,
         validate: {
             validator: function (value) {
-                const nameRegex = /^[a-zA-Z0-9]+$/; // ✅ allows only letters and digits
+                const nameRegex = /^[a-zA-Z0-9]+$/; 
                 return nameRegex.test(value);
             },
             message: 'Only alphanumeric characters are allowed.'
@@ -17,7 +17,14 @@ const contactSchema = new mongoose.Schema({
     emailAddress:{
         type: String,
         required:[true,'Email address is required'],
-        unique :true
+        unique :true,
+        validate: {
+        validator: function (value) {
+            const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+            return emailRegex.test(value);
+            },
+            message: 'Please enter a valid email address.'
+        }
 
     },
     age:{
