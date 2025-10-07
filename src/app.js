@@ -6,9 +6,12 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const Contact = require('../src/router/Contact')
+
+app.use('/api', Contact)
 const connectToDB = async() =>{
     try{
-        await mongoos.connect('mongodb://localhost:27017',{
+        await mongoos.connect('mongodb://localhost:27017/collections',{
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })
