@@ -1,22 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const Contact = require('../models/Contact');
+const {createContact}= require('../controller/controller');
 
 router.post("/Contact",async(req,res)=>{
     try{
-        const newContact = new Contact(req.body);
-        await newContact.save()
-        .then((savedContact =>{
-            console.log(savedContact);
-            res.status(201).json({msg:"Conatct saved Successfully"})
-        }))
-        .catch((error)=>{
-            console.log(error);
-            res.status(500).json({msg:"Unable to create new contact"})
-        })
-    }catch(error){
-        console.log(error);
-        res.status(500).json({msg:"Unable to create new contact"})
+        
+    if (!req.body) {
+        return res.sendStatus(400);
+    }
+        const newContact=  await createContact(req,res).then(() => res.json({ message: 'New Contact created.' }));
+
+    } catch(e){
+        console.log(e);
+        res.sendStatus(400);
     }
 })
 module.exports = router;
